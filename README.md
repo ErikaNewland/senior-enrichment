@@ -1,4 +1,4 @@
-# Senior Enrichment Project
+<!-- # Senior Enrichment Project
 
 Make a thing!
 
@@ -107,5 +107,11 @@ Once you've recorded your screencast, please *upload it to YouTube as an unliste
 - Models (25%)
 - Routes (25%)
 - Frontend logic and functionality (25%)
-- Design + Bonus features (up to 10 Extra Credit points)
+- Design + Bonus features (up to 10 Extra Credit points) -->
+
+
+
+NEXT:
+
+1.  TEST POST/PUT/DELTE ROUTES
 
