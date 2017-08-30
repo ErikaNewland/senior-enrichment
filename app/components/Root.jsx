@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import Campus from './Campus'
+import Campuses from './Campuses'
 import {fetchStudents, fetchCampuses} from '../reducers'
 import {connect} from 'react-redux'
 
@@ -8,15 +8,16 @@ class Root extends Component {
   
 
   componentDidMount(){
-    console.log('props', this.props)
     this.props.fetchCampuses();
     this.props.fetchStudents();
   }
 
   render() {
-    console.log(this.props.students, this.props.students)
     return (
-      <div>Hello World</div>/*temporary*/
+      <div>Hello World
+        <Campuses/>
+      </div>/*temporary*/
+
     )
   }
 
@@ -24,10 +25,7 @@ class Root extends Component {
 
 
 const mapStateToProps = state =>{
-  return {
-    students: state.students,
-    campuses: state.campuses
-  }
+  return null
 }
 
 const mapDispatchToProps = (dispatch) =>{
