@@ -1,5 +1,9 @@
 import React, {Component} from 'react'
+import { Router } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
+import history from '../history';
 
+import Students from './Students'
 import Campuses from './Campuses'
 import {fetchStudents, fetchCampuses} from '../reducers'
 import {connect} from 'react-redux'
@@ -14,9 +18,12 @@ class Root extends Component {
 
   render() {
     return (
-      <div>Hello World
-        <Campuses/>
-      </div>/*temporary*/
+      <Router history = {history}>
+        <div>Hello World
+          <Campuses/>
+          <Students/>
+        </div>
+      </Router>
 
     )
   }
@@ -25,7 +32,7 @@ class Root extends Component {
 
 
 const mapStateToProps = state =>{
-  return null
+  return {}
 }
 
 const mapDispatchToProps = (dispatch) =>{

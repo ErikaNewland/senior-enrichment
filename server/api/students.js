@@ -29,12 +29,33 @@ api.get('/:studentId', (req, res, next)=>{
 		.catch(next)
 })
 
+
+
 api.post('/', (req, res, next)=>{
-	Student.create(req.body)
-		.then(student=>res.json(student))
-		.catch(next)
+	console.log('req.body', req.body)
+	const creatingStudent = Student.create({
+		name: req.body.name,
+		email: req.body.email
+	})
+	const findingCampus = Campus.findOne({
+		where: {
+			name: req.body.campusName
+		}
+	})
+	Promise.all([creatingStudent, findingCampus])
+		.then((array)=>{
+			const student = array[0]
+			const campus = array[1]	
+			student.setCampus(campus)
+			return student
+		})
+		.then(student=>{
+			console.log("student", student)
+			res.json(student)
+		})
+	})
 	
-})
+
 
 api.put('/:studentId', (req, res, next)=>{
 	Student.update(req.body, {
