@@ -1,5 +1,5 @@
 'use strict';
-
+const db = require('../')
 
 // Require all the models
 	// Running each model (i.e. table) module (i.e. file) registers each model into our sequelize db so any other part of the application could call db.model('user') OR db.models.user to get access to the `user` model.
@@ -11,6 +11,7 @@ const Campus = require('./campus');
 
 Student.belongsTo(Campus);
 // Student.hasOne(Campus)
+Campus.hasMany(Student);
 
-module.exports = {User, Student, Campus, };
+module.exports = {db, Student, Campus};
 

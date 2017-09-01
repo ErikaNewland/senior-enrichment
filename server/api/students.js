@@ -9,30 +9,27 @@ const Student = models.Student
 
 //Students
 
-api.get('/', (req, res, next)=>{
-	console.log('hit route')
+api.get('/', (req, res, next) => {
 	Student.findAll()
-		.then((students)=>{
-			console.log('all students', students)
+		.then((students) => {
 			res.json(students)
 		})
 		.catch(next)
 })
 
-api.get('/:studentId', (req, res, next)=>{
+api.get('/:studentId', (req, res, next) => {
 	Student.findOne({
 		where: {
 			id: req.params.studentId
 		}
 	})
-		.then((student)=>res.json(student))
+		.then((student) => res.json(student))
 		.catch(next)
 })
 
 
 
-api.post('/', (req, res, next)=>{
-	console.log('req.body', req.body)
+api.post('/', (req, res, next) => {
 	const creatingStudent = Student.create({
 		name: req.body.name,
 		email: req.body.email
@@ -43,39 +40,60 @@ api.post('/', (req, res, next)=>{
 		}
 	})
 	Promise.all([creatingStudent, findingCampus])
-		.then((array)=>{
+		.then((array) => {
 			const student = array[0]
-			const campus = array[1]	
+			const campus = array[1]
 			student.setCampus(campus)
 			return student
 		})
-		.then(student=>{
+		.then(student => {
 			console.log("student", student)
 			res.json(student)
 		})
-	})
-	
-
-
-api.put('/:studentId', (req, res, next)=>{
-	Student.update(req.body, {
-		where: {
-		id: req.params.studentId
-	}})
-		.then(student=>res.json(student))
-		.catch(next)
 })
 
 
-api.delete('/:StudentId', (req, res, next)=>{
-	Student.destroy({
+api.put('/:studentId', (req, res, next) => {
+	console.log('req.body', req.body)
+	Student.update({
+		name: req.body.name,
+		email: req.body.email,
+		campusId: req.body.campusId,
+	}, {
 		where: {
-			id: req.params.id
+			id: req.params.studentId
 		}
 	})
-		.then(Student.findAll())
-		.then(students=>res.json(students))
-		.catch(next)
+	.then((updatedStudent)=>{
+		console.log('updatedStudent', updatedStudent)
+		return Student.findOne({
+		where: {
+			id: req.params.studentId
+		}
+	})})
+	.then(student=>res.json(student))
 })
 
-module.exports=api
+
+api.delete('/:studentId', (req, res, next) => {
+	Student.findOne({
+		where: {
+			id: req.params.studentId
+		}
+	})
+	.then(student=>{
+		console.log('found', student)
+		return student.destroy()
+	})
+	.then(()=>{
+		console.log('moving foward')
+		return Student.findAll()
+	})
+	.then(students=>{
+		console.log('sending back')
+		res.json(students)})
+	.catch(next)
+		
+})
+
+module.exports = api

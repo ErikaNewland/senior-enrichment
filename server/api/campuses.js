@@ -43,19 +43,40 @@ api.put('/:campusId', (req, res, next)=>{
 		where: {
 		id: req.params.campusId
 	}})
-		.then(campus=>res.json(campus))
+		.then(()=>{
+			return Campus.findOne({
+				where: {
+					id: req.params.campusId
+				}
+			})
+		})
+		.then(campus=>{
+			res.json(campus)
+		})
 		.catch(next)
 })
 
 api.delete('/:campusId', (req, res, next)=>{
-	Campus.destroy({
+	Campus.findOne({
 		where: {
-			id: req.params.id
+			id: req.params.campusId
 		}
 	})
-		.then(Campus.findAll())
-		.then(campuses=>res.json(campuses))
-		.catch(next)
+	.then(campus=>{
+		campus.destroy()
+	})
+	.then((destroyed)=>{
+		// console.log("req.params.id", req.params.campusId)
+		// console.log('what was destroyed', destroyed)
+		const fetchingStudents = Student.findAll()
+		const fetchingCampuses = Campus.findAll()
+		return Promise.all([fetchingStudents, fetchingCampuses])
+	})
+	.then(arrOfStudentsAndCampuses=>{
+		// console.log('sending', arrOfStudentsAndCampuses)
+		res.json(arrOfStudentsAndCampuses)
+	})
+	.catch(next)
 })
 
 

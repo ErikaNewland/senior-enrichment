@@ -1,6 +1,8 @@
 'use strict';
-var Sequelize = require('sequelize')
-var db = require('../index.js')
+const Sequelize = require('sequelize')
+const db = require('../index.js')
+const Campus = require('./campus')
+
 
 
 const Student = db.define('student', {
@@ -14,6 +16,10 @@ const Student = db.define('student', {
           isEmail: true
       }
   }
+}, {
+    defaultScope: {
+        include: [Campus]
+    }
 })
 
 module.exports = Student;
